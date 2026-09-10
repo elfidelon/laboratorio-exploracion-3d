@@ -1,0 +1,51 @@
+# ---------- Unity ----------
+# Carpetas que Unity regenera solas. Nunca van al repo.
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Paquetes resueltos automaticamente
+/[Aa]ssets/[Aa]ssetStoreTools*
+/[Aa]ssets/[Pp]lugins/[Ee]ditor/JetBrains*
+
+# ---------- Proyectos de IDE (los regenera Unity) ----------
+.vscode/
+.idea/
+.vs/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ---------- Builds ----------
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# ---------- Crashes ----------
+sysinfo.txt
+crashlytics-build.properties
+
+# ---------- macOS ----------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*

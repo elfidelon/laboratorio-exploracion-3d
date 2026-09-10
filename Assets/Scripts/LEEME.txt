@@ -1,0 +1,129 @@
+LABORATORIO DE EXPLORACION 3D - Scripts del Proyecto 1
+=======================================================
+
+PASO UNICO PARA DEJAR TODO LISTO
+--------------------------------
+En Unity, menu superior:  Examen > Configurar escena automaticamente
+
+Eso hace todo el cableado solo:
+  - Le pone Rigidbody + PlayerController + AudioSource a la esfera.
+  - Le calcula un collider en trigger a cada botella (corona) y le
+    agrega el script Coleccionable. El FBX se importo sin colliders,
+    por eso antes no se podian recolectar.
+  - Crea el objeto GameManager y le conecta el Text (TMP) del Canvas.
+  - Crea el texto "MensajeFinal" al centro del Canvas (apagado hasta la meta).
+  - Le pone PuertaTrigger a la puerta y le crea una zona de deteccion hija.
+  - Le pone el script Meta al cubo llamado "meta". El cubo queda SOLIDO:
+    la esfera aterriza encima y ahi aparece el mensaje y suena el sonido.
+  - Le APAGA el collider a cualquier piso que este tapando el cubo de meta
+    (hoy es piso (12), que lo tenia medio enterrado). Ese piso se sigue
+    viendo pero deja pasar, asi el unico piso ahi arriba es la meta.
+  - Borra el objeto ZonaMeta si quedo suelto de una version anterior.
+  - Le pone PlataformaMovil a "piso movible" y "piso movible 2", con el
+    recorrido ya calculado para que se pueda cruzar el nivel.
+  - Conecta los sonidos de Assets/Audio a quien corresponde.
+  - Le pone CamaraSeguidora a la Main Camera apuntando a la esfera.
+
+Se puede volver a ejecutar cuantas veces quieras, no duplica nada.
+
+
+CONTROLES
+---------
+  WASD / flechas   moverse
+  Espacio          saltar
+  (tambien funciona con control de gamepad)
+
+
+LOS SCRIPTS
+-----------
+PlayerController.cs   Esfera. Movimiento en FixedUpdate con Rigidbody y
+                      salto con chequeo de suelo. Velocidad y fuerza de
+                      salto ajustables en el Inspector.
+
+Coleccionable.cs      Cada botella. Gira, flota y al tocarla el jugador
+                      suma +1 y desaparece.
+
+GameManager.cs        Cuenta las botellas, actualiza el contador de
+                      pantalla y muestra el mensaje final.
+
+PuertaTrigger.cs      La puerta se desliza a un lado al acercarse el
+                      jugador. Direccion y distancia editables.
+
+ZonaPuerta.cs         Zona invisible que detecta al jugador y avisa a
+                      la puerta. Va en el hijo "ZonaDeteccion".
+
+PlataformaMovil.cs    Plataforma que va de izquierda a derecha y se lleva
+                      a la esfera montada encima. Distancia, velocidad y
+                      espera en los extremos editables.
+
+Meta.cs               Final del nivel. Muestra un mensaje si llegas sin
+                      todas las botellas y otro distinto si las juntaste
+                      todas. Los dos textos se editan en el Inspector.
+
+CamaraSeguidora.cs    Camara en tercera persona con seguimiento suave.
+
+
+AJUSTES QUE QUIZA QUIERAS TOCAR
+-------------------------------
+- Esfera > PlayerController > Velocidad (6) y Fuerza Salto (6).
+  Si no alcanza a subir a una plataforma, sube Fuerza Salto.
+
+- Esfera > PlayerController > Bloquear Eje Z esta ACTIVADO porque todo
+  el nivel esta en linea recta sobre el eje X (z = 2.9). Si algun dia
+  haces el nivel mas ancho, desactivalo.
+
+- Puerta > PuertaTrigger > Direccion Apertura esta en Z (0,0,1) porque
+  la puerta hoy es una losa horizontal encima de piso (7). Si la giras
+  para que quede parada como pared, cambia esa direccion a (1,0,0).
+
+- Meta > los dos mensajes se editan directo en el Inspector.
+
+- Esfera > PlayerController > Multiplicador Gravedad (2) hace que el salto
+  no se sienta flotante. Fuerza Salto esta en 15 porque el salto mas alto
+  del nivel es de 4.2 m (de piso (10) a la plataforma movil 2).
+
+- Plataformas moviles: selecciona una y en la vista Scene veras una linea
+  morada con su recorrido. Cambia Distancia para hacerlo mas largo o corto.
+
+
+SONIDOS
+-------
+Todo el audio vive en Assets/Audio. Lo que suena en el juego:
+
+  papoiiii.mp3                          al agarrar cada botella
+  Happy Wheels victory green screen.mp3 al llegar a la meta
+  salto.wav                             al saltar
+
+Tambien quedaron ahi, sin usar:
+  faaaa.mp3                             libre, por si lo quieres para algo
+  recolectar.wav / meta.wav             los provisionales generados antes
+
+Donde se cambia cada uno (son campos AudioClip: arrastras el archivo encima):
+
+  GameManager > Sonido Recolectar     el de las botellas
+  meta        > Meta > Sonido Meta    el del cubo de meta
+  Sphere      > PlayerController > Sonido Salto
+
+El configurador respeta lo que tu pongas a mano: solo rellena un campo si
+esta vacio o si tiene uno de los provisionales.
+
+Ojo: el sonido de recolectar vive en el GameManager, en un solo lugar, y de
+ahi lo toman las 6 botellas. Cada botella tiene ademas su propio campo
+Sonido Recoleccion, pero dejalo VACIO: si llenas los dos, se oyen encimados.
+Si alguna lo tiene lleno, el configurador te avisa en la consola.
+
+
+BOTELLAS FLOTANDO EN EL AIRE
+----------------------------
+Tres botellas quedaron a media altura sin piso debajo, asi que no se pueden
+alcanzar y nunca saldria el mensaje de "eres un alcoholico":
+
+  corona (2)   x -28.55   y 9.23
+  corona (4)   x -14.76   y 11.79
+  corona (5)   x -12.93   y 28.32
+
+Si quieres que se acomoden solas sobre el piso mas cercano:
+
+  Examen > Acomodar botellas flotantes
+
+Solo mueve las que estan flotando, las que ya estan bien no las toca.
